@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Library - Smart Home & Robotics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6b8cbc;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --smart-home: #6c63ff;
+            --robotics: #00bfa6;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--smart-home), var(--robotics));
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            padding: 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .smart-home .section-header {
+            background: linear-gradient(135deg, var(--smart-home), #8a84ff);
+        }
+
+        .robotics .section-header {
+            background: linear-gradient(135deg, var(--robotics), #00d4b1);
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .subsection-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 2.5rem;
+        }
+
+        .subsection {
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 14px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .subsection::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--smart-home), var(--robotics));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .subsection:hover::before {
+            transform: scaleX(1);
+        }
+
+        .subsection:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .subsection-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .subsection:hover .subsection-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .subsection-desc {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .smart-home .btn {
+            background: var(--smart-home);
+        }
+
+        .smart-home .btn:hover {
+            background: #5a52e0;
+        }
+
+        .robotics .btn {
+            background: var(--robotics);
+        }
+
+        .robotics .btn:hover {
+            background: #00a58e;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            background: var(--smart-home);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 120px;
+            height: 120px;
+            background: var(--robotics);
+            top: 70%;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            top: 40%;
+            left: 90%;
+            animation-delay: -10s;
+        }
+
+        .shape-4 {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            top: 80%;
+            left: 10%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 40px) rotate(90deg);
+            }
+            50% {
+                transform: translate(40px, 0) rotate(180deg);
+            }
+            75% {
+                transform: translate(20px, -40px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: #6c757d;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--smart-home), var(--robotics));
+            border-radius: 3px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .subsection-container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+            
+            .subsection {
+                min-height: 200px;
+                padding: 1.5rem;
+            }
+            
+            .section-header {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .subsection {
+                padding: 1.2rem;
+            }
+            
+            .subsection-icon {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <header>
+        <h1>Study Library</h1>
+        <p class="subtitle">Access your Smart Home and Robotics materials with a single click</p>
+    </header>
+
+    <div class="container">
+        <!-- Smart Home Section -->
+        <section class="section smart-home">
+            <div class="section-header">
+                <div class="section-icon">🏠</div>
+                <h2 class="section-title">Smart Home</h2>
+            </div>
+            <div class="subsection-container">
+                <div class="subsection">
+                    <div class="subsection-icon">📊</div>
+                    <h3 class="subsection-title">Open in Canva</h3>
+                    <p class="subsection-desc">Access interactive presentations and designs</p>
+                    <a href="https://www.canva.com/design/DAG1RKRaio4/-iAg59FpNuutuksfmp8KFw/edit?utm_content=DAG1RKRaio4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="btn">Open Content</a>
+                </div>
+                <div class="subsection">
+                    <div class="subsection-icon">📄</div>
+                    <h3 class="subsection-title">Open PDF</h3>
+                    <p class="subsection-desc">View and download PDF documents</p>
+                    <a href="https://drive.google.com/file/d/1IgF8AAPzL706AGVrPI-mtdO6sKKZyFds/view?usp=drivesdk" class="btn">Open Content</a>
+                </div>
+                <div class="subsection">
+                    <div class="subsection-icon">📓</div>
+                    <h3 class="subsection-title">Open Notebook LM</h3>
+                    <p class="subsection-desc">Explore interactive notebooks</p>
+                    <a href="https://notebooklm.google.com/notebook/ed9d5c1d-3e26-4dae-b363-a418045e0291" class="btn">Open Content</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Robotics Class Section -->
+        <section class="section robotics">
+            <div class="section-header">
+                <div class="section-icon">🤖</div>
+                <h2 class="section-title">Robotics Class</h2>
+            </div>
+            <div class="subsection-container">
+                <div class="subsection">
+                    <div class="subsection-icon">📊</div>
+                    <h3 class="subsection-title">Open in Canva</h3>
+                    <p class="subsection-desc">Access interactive presentations and designs</p>
+                    <a href="https://www.canva.com/design/DAG1jFSs8sY/MfOPEmJaJqoC9Lmk0lxtVA/edit?utm_content=DAG1jFSs8sY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="btn">Open Content</a>
+                </div>
+                <div class="subsection">
+                    <div class="subsection-icon">🎬</div>
+                    <h3 class="subsection-title">Open Video</h3>
+                    <p class="subsection-desc">Watch instructional videos and tutorials</p>
+                    <a href="https://drive.google.com/file/d/1GXHHn9-BEvVZxktZ40x5dKmwAu_CAAZ8/view?usp=drivesdk" class="btn">Open Content</a>
+                </div>
+                <div class="subsection">
+                    <div class="subsection-icon">📓</div>
+                    <h3 class="subsection-title">Open Notebook LM</h3>
+                    <p class="subsection-desc">Explore interactive notebooks</p>
+                    <a href="https://notebooklm.google.com/notebook/ba882c36-33f2-43b6-9589-d98c44c23ae8" class="btn">Open Content</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Study Library &copy; 2023 | All your learning materials in one place</p>
+    </footer>
+
+    <script>
+        // Add scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Add hover effect to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add dynamic background color change
+            const header = document.querySelector('header');
+            let hue = 0;
+            
+            function updateHeaderColor() {
+                hue = (hue + 0.5) % 360;
+                header.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 60%), hsl(${(hue + 60) % 360}, 70%, 60%))`;
+                requestAnimationFrame(updateHeaderColor);
+            }
+            
+            // Uncomment the line below to enable dynamic header color (can be performance intensive)
+            // updateHeaderColor();
+        });
+    </script>
+</body>
+</html>
